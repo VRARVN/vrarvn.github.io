@@ -2,91 +2,55 @@
 <html lang="en">
 
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-	<title>Real-Time Tracking</title>
-	<link rel="stylesheet" href="./Real-Time Tracking_files/app.101.css">
+    <title>Real-Time Hand Tracking</title>
+    <link rel="stylesheet" href="./Real-Time Tracking_files/app.101.css">
 
-	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"
-		crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
-		crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
-
-
-	<script type="module">
-		const videoElement = document.getElementsByClassName('input_video')[0];
-		const canvasElement = document.getElementsByClassName('output_canvas')[0];
-		const canvasCtx = canvasElement.getContext('2d');
-
-		function onResults(results) {
-			canvasCtx.save();
-			canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-			canvasCtx.drawImage(
-				results.image, 0, 0, canvasElement.width, canvasElement.height);
-			if (results.multiHandLandmarks) {
-				for (const landmarks of results.multiHandLandmarks) {
-					drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS,
-						{ color: '#00FF00', lineWidth: 5 });
-					drawLandmarks(canvasCtx, landmarks, { color: '#FF0000', lineWidth: 2 });
-				}
-			}
-			canvasCtx.restore();
-		}
-
-		const hands = new Hands({
-			locateFile: (file) => {
-				return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
-			}
-		});
-		hands.setOptions({
-			maxNumHands: 2,
-			minDetectionConfidence: 0.5,
-			minTrackingConfidence: 0.5
-		});
-		hands.onResults(onResults);
-
-		const camera = new Camera(videoElement, {
-			onFrame: async () => {
-				await hands.send({ image: videoElement });
-			},
-			width: 1280,
-			height: 720
-		});
-		camera.start();
-	</script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+    <script type="module">
+        const videoElement = document.getElementsByClassName('input_video')[0]; const canvasElement = document.getElementsByClassName('output_canvas')[0]; const canvasCtx = canvasElement.getContext('2d'); function onResults(results) { canvasCtx.save(); canvasCtx.clearRect(0,
+        0, canvasElement.width, canvasElement.height); canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height); if (results.multiHandLandmarks) { for (const landmarks of results.multiHandLandmarks) { drawConnectors(canvasCtx,
+        landmarks, HAND_CONNECTIONS, { color: '#00FF00', lineWidth: 5 }); drawLandmarks(canvasCtx, landmarks, { color: '#FF0000', lineWidth: 2 }); } } canvasCtx.restore(); } const hands = new Hands({ locateFile: (file) => { return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+        } }); hands.setOptions({ maxNumHands: 2, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 }); hands.onResults(onResults); const camera = new Camera(videoElement, { onFrame: async () => { await hands.send({ image: videoElement }); }, width:
+        1280, height: 720 }); camera.start();
+    </script>
 </head>
 
 <body class="">
-	<canvas id="toy-bg" width="4" height="4"></canvas>
-	<header>
-		<a href="https://vrarvn.github.io/" target="_top" id="head-home" class="notranslate"><span></span>
-			<h1>Real-Time Tracking<sup>®</sup></h1>
+    <canvas id="toy-bg" width="4" height="4"></canvas>
+    <header>
+        <a href="https://vrarvn.github.io/" target="_top" id="head-home" class="notranslate"><span></span>
+			<h1>Real-Time Hand Tracking<sup>®</sup></h1>
 		</a>
-		<a href="https://gscbros.github.io/" target="_top" id="head-neave" class="notranslate">GSC Brothers</a>
-		<p class="neave notranslate"><a href="https://gscbros.github.io/" target="_top"><span></span></a></p>
-		<p class="hidden">Take pictures and track your face, hands, full-body online with your webcam. Save photos to
-			your computer, or share with friends!</p>
-		<a href="" target="cws" class="cws"><span class="plus">+</span> Add to Chrome</a>
-	</header>
-	<article id="content" style="top: 50px;">
-		<section id="app">
-			<div id="toy" data-version="322">
-				<div id="toy-main" class="" style="display: block; opacity: 1;">
-					<div id="toy-view" class="toy-shadow"
-						style="width: 911px; height: 683.25px; margin-left: -455.5px; margin-top: -341.625px;">
-						<div class="container">
-							<video class="input_video" visibility: hidden></video>
-							<canvas class="output_canvas" width="800" height="600"
-								style="width: 911px; height: 683.25px; margin-left: 0px;"></canvas>
-						</div>
-						<p id="toy-countdown" class="countdown-center"></p>
-					</div>
-				</div>
-			</div>
-		</section>
-	</article>
+        <a href="https://gscbros.github.io/" target="_top" id="head-neave" class="notranslate">GSC Brothers</a>
+        <p class="neave notranslate"><a href="https://gscbros.github.io/" target="_top"><span></span></a></p>
+        <p class="hidden">Track your hands online with your webcam. Take picture and save it to your computer, or share with friends!</p>
+        <a href="" target="cws" class="cws"><span class="plus">+</span> Add to Chrome</a>
+    </header>
+    <article id="content" style="top: 50px; align-content: center;">
+
+        <div id="infobar-stripe" class="hot-pink" style="display: none;">
+            <div></div>
+        </div>
+        <section id="app">
+            <div id="toy" data-version="322">
+                <div id="toy-main" class="" style="display: block; opacity: 1;">
+                    <div id="toy-view" class="toy-shadow" style="width: 1280px; height: 720px;">
+                        <div class="container">
+                            <video id="vid_id" class="input_video" style="display: none;"></video>
+                            <canvas class="output_canvas" width="1280" height="720" style="width: 1280px; height: 720px;"></canvas>
+                        </div>
+                        <p id="toy-countdown" class="countdown-center"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </article>
 </body>
+<div style="position: absolute; top: 0px;"></div>
 
 </html>
