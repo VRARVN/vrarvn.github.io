@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)https://vrarvn.github.io/ -->
+<html lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<title>Real-Time Tracking</title>
+	<meta name="description"
+		content="Real-time tracking and taking pictures online with your webcam. Save photos to your computer, or share with friends!">
+	<meta name="author" content="GSC Brothers">
+	<meta name="viewport"
+		content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+	<meta name="referrer" content="origin">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="application-name" content="Real-Time Tracking">
+	<meta name="theme-color" content="#000">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://vrarvn.github.io/">
+	<meta property="og:locale" content="en_US">
+	<meta property="og:site_name" content="Real-Time Tracking">
+	<meta property="og:title" content="Real-Time Tracking - Take photos online with over 80 fun effects">
+	<meta property="og:description"
+		content="Take pictures online with your webcam. Save photos to your computer, or share with friends!">
+	<meta property="og:image" content="https://vrarvn.github.io/assets/images/icon-480.jpg">
+
+	<link rel="stylesheet" href="./Real-Time Tracking_files/app.101.css">
+
+	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+
+
+	<script type="module">
+		const videoElement = document.getElementsByClassName('input_video')[0];
+		const canvasElement = document.getElementsByClassName('output_canvas')[0];
+		const canvasCtx = canvasElement.getContext('2d');
+
+		function onResults(results) {
+			canvasCtx.save();
+			canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+			canvasCtx.drawImage(
+				results.image, 0, 0, canvasElement.width, canvasElement.height);
+			if (results.multiHandLandmarks) {
+				for (const landmarks of results.multiHandLandmarks) {
+					drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS,
+						{ color: '#00FF00', lineWidth: 5 });
+					drawLandmarks(canvasCtx, landmarks, { color: '#FF0000', lineWidth: 2 });
+				}
+			}
+			canvasCtx.restore();
+		}
+
+		const hands = new Hands({
+			locateFile: (file) => {
+				return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+			}
+		});
+		hands.setOptions({
+			maxNumHands: 2,
+			minDetectionConfidence: 0.5,
+			minTrackingConfidence: 0.5
+		});
+		hands.onResults(onResults);
+
+		const camera = new Camera(videoElement, {
+			onFrame: async () => {
+				await hands.send({ image: videoElement });
+			},
+			width: 1280,
+			height: 720
+		});
+		camera.start();
+	</script>
+</head>
+
+<body class="">
+	<canvas id="toy-bg" width="4" height="4"></canvas>
+	<header>
+		<a href="https://vrarvn.github.io/" target="_top" id="head-home" class="notranslate"><span></span>
+			<h1>Real-Time Tracking<sup>®</sup></h1>
+		</a>
+		<a href="https://gscbros.github.io/" target="_top" id="head-neave" class="notranslate">GSC Brothers</a>
+		<p class="neave notranslate"><a href="https://gscbros.github.io/" target="_top"><span></span></a></p>
+		<p class="hidden">Take pictures and track your face, hands, full-body online with your webcam. Save photos to
+			your computer, or share with friends!</p>
+		<a href="" target="cws" class="cws"><span class="plus">+</span> Add to Chrome</a>
+	</header>
+	<article id="content" style="top: 50px;">
+
+		<div id="infobar-stripe" class="hot-pink" style="display: none;">
+			<div></div>
+		</div>
+		<section id="app" style="">
+			<div id="toy" data-version="322">
+				<div id="toy-intro" class="wait" style="opacity: 0; display: none;">
+					<div id="toy-intro-prompt">
+						<p class="prompt request" style="display: none;">Press the button to access your&nbsp;camera:
+						</p>
+						<p class="prompt request-error" style="display: none;">Please try again!</p>
+						<p class="prompt access" style="display: none;">Please allow access!</p>
+						<p class="prompt access-above" style="display: none;"><span
+								class="arrow rotate-270"></span>Allow access from the menu&nbsp;above<span
+								class="arrow rotate-270"></span></p>
+						<p class="prompt loading" style="display: block;">Loading…</p>
+						<p class="prompt error" style="display: none;">Sorry, there was a problem.</p>
+						<div class="prompt incapable warning" style="display: none;">Sorry, Real-Time Tracking does not
+							work in this web&nbsp;browser.</div>
+					</div>
+					<div id="toy-start">
+						<div id="button-start" class="button hot-pink" style="display: none;">
+							<div class="icon"></div>
+							<p>Use my camera</p>
+						</div>
+						<a href="https://vrarvn.github.io/" rel="nofollow" id="button-reload" class="button hot-pink">
+							<div class="arrow"></div>
+							<p>Please try again!</p>
+						</a>
+					</div>
+					<noscript>
+						<div id="app-no-js" class="warning">Please <a href="https://enable-javascript.com/"
+								target="_blank">enable JavaScript</a> to use Real-Time Tracking.</div>
+					</noscript>
+					<footer style="display: none;">
+						<p id="footer-denied" style="display: none;">Please enable camera access in your web
+							browser’s&nbsp;settings.</p>
+						<p id="footer-unavailable" style="display: none;">Close all other websites and programs that may
+							be using your camera (Skype, chat&nbsp;etc.)</p>
+						<p id="footer-message">Photos are <strong>not</strong> stored online unless you choose to
+							share&nbsp;them.</p>
+					</footer>
+				</div>
+				<div id="toy-main" class="" style="display: block; opacity: 1;">
+					<div id="toy-grid">
+						<div id="grid-view">
+							<div>
+								<div>
+									<div>
+										<div class="grid-shadow"><canvas></canvas></div>
+										<p></p>
+									</div>
+									<div>
+										<div class="grid-shadow"><canvas></canvas></div>
+										<p></p>
+									</div>
+									<div>
+										<div class="grid-shadow"><canvas></canvas></div>
+										<p></p>
+									</div>
+								</div>
+								<div>
+									<div>
+										<div class="grid-shadow"><canvas></canvas></div>
+										<p></p>
+									</div>
+									<div>
+										<div class="grid-shadow"><canvas></canvas></div>
+										<p></p>
+									</div>
+									<div>
+										<div class="grid-shadow"><canvas></canvas></div>
+										<p></p>
+									</div>
+								</div>
+								<div>
+									<div>
+										<div class="grid-shadow"><canvas></canvas></div>
+										<p></p>
+									</div>
+									<div>
+										<div class="grid-shadow"><canvas></canvas></div>
+										<p></p>
+									</div>
+									<div>
+										<div class="grid-shadow"><canvas></canvas></div>
+										<p></p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="grid-ui">
+							<div id="button-up" class="button hot-pink">
+								<div class="arrow rotate-270"></div>
+							</div>
+							<div id="button-down" class="button hot-pink">
+								<div class="arrow rotate-90"></div>
+							</div>
+						</div>
+					</div>
+					<div id="toy-view" class="toy-shadow"
+						style="width: 911px; height: 683.25px; margin-left: -455.5px; margin-top: -341.625px;">
+						<div class="container">
+							<video class="input_video" visibility: hidden></video>
+							<canvas class="output_canvas" width="800" height="600"
+								style="width: 911px; height: 683.25px; margin-left: 0px;"></canvas>
+						</div>
+						<p id="toy-countdown" class="countdown-center"></p>
+					</div>
+					<div id="toy-ui" class="" style="display: block; opacity: 1;">
+						<div id="settings">
+							<div id="button-settings" class="button hot-pink">
+								<div class="icon"></div>
+							</div>
+							<form style="display: none;">
+								<div class="popup">
+									<fieldset>
+										<div>
+											<div class="checkbox hot-pink"></div><input type="radio"
+												name="settings-camera" id="setting-camera1" value="camera"
+												data-number="1"><label for="setting-camera1">OBS Virtual Camera</label>
+										</div>
+										<div>
+											<div class="checkbox hot-pink"></div><input type="radio"
+												name="settings-camera" id="setting-camera0" value="camera"
+												data-number="0"><label for="setting-camera0">HD Pro Webcam C920</label>
+										</div>
+										<div>
+											<div class="checkbox hot-pink"></div>
+											<input type="checkbox" id="setting-mirror" value="mirror">
+											<label for="setting-mirror">Mirror</label>
+										</div>
+										<div>
+											<div class="checkbox hot-pink"></div>
+											<input type="checkbox" id="setting-square" value="square">
+											<label for="setting-square">Square</label>
+										</div>
+										<div>
+											<div class="checkbox hot-pink"></div>
+											<input type="checkbox" id="setting-countdown" value="countdown">
+											<label for="setting-countdown">Countdown</label>
+										</div>
+										<div>
+											<div class="checkbox hot-pink"></div>
+											<input type="checkbox" id="setting-flash" value="flash">
+											<label for="setting-flash">Flash</label>
+										</div>
+										<div>
+											<div class="checkbox hot-pink"></div>
+											<input type="checkbox" id="setting-full-screen" value="full-screen">
+											<label for="setting-full-screen">Full Screen</label>
+										</div>
+									</fieldset>
+								</div>
+								<div class="anchor"></div>
+							</form>
+						</div>
+						<div id="button-previous" class="button hot-pink">
+							<div class="arrow rotate-180"></div>
+						</div>
+						<div id="button-effects" class="button hot-pink">
+							<p class="more">More effects…</p>
+							<p class="loading"><span class="text">Loading… </span><span class="pc"></span></p>
+							<p class="effect effect-normal" style="">Normal</p>
+						</div>
+						<div id="button-next" class="button hot-pink">
+							<div class="arrow"></div>
+						</div>
+						<div id="capture">
+							<div id="button-capture" class="button hot-pink">
+								<div class="icon"></div>
+							</div>
+							<p id="capture-text">Take a photo</p>
+							<p id="capture-quad-text" style="display: none;">Take 4 photos</p>
+						</div>
+					</div>
+					<div id="photo">
+						<img src="data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAAACAkQBADs=" width="800"
+							height="600" alt="">
+						<form>
+							<fieldset>
+								<input type="text" value="" placeholder=""
+									data-alt="Playing with Real-Time Tracking|Taking photos with Real-Time Tracking|Just took this photo with Real-Time Tracking"
+									maxlength="245" class="photo-shadow">
+								<input type="hidden" value="Playing with the %s effect on Real-Time Tracking">
+								<input type="hidden" value="Just took this %s pic on Real-Time Tracking">
+								<input type="hidden" value="I &lt;3 this %s effect on Real-Time Tracking">
+								<input type="hidden" value="My %s photo from Real-Time Tracking :)">
+								<p>&nbsp;</p>
+							</fieldset>
+						</form>
+					</div>
+					<div id="toy-share-ui">
+						<div id="button-back" class="button hot-pink">
+							<div class="arrow rotate-180"></div>
+							<p>Back</p>
+						</div>
+						<div class="button twitter share">
+							<div class="icon"></div>
+							<p class="share-login">Twitter</p>
+							<p class="share-post">Post to Twitter</p>
+							<p class="share-posting">Tweeting</p>
+							<p class="share-error">Please try again!</p>
+						</div>
+						<a href="https://twitter.com/" rel="nofollow" target="_blank"
+							class="button twitter share-center">
+							<div class="icon"></div>
+							<p>Photo tweeted!</p>
+						</a>
+						<div class="button google share">
+							<div class="icon"></div>
+							<p class="share-login">Google Photos</p>
+							<p class="share-post">Save to Google Photos</p>
+							<p class="share-posting">Saving</p>
+							<p class="share-error">Please try again!</p>
+						</div>
+						<a href="https://photos.google.com/" rel="nofollow" target="_blank"
+							class="button google share-center">
+							<div class="icon"></div>
+							<p>Photo saved!</p>
+						</a>
+						<div class="button tumblr share">
+							<div class="icon"></div>
+							<p class="share-login">Tumblr</p>
+							<p class="share-post">Post to Tumblr</p>
+							<p class="share-posting">Posting</p>
+							<p class="share-error">Please try again!</p>
+						</div>
+						<a href="https://www.tumblr.com/" rel="nofollow" target="_blank"
+							class="button tumblr share-center">
+							<div class="icon"></div>
+							<p>Photo posted!</p>
+						</a>
+						<div class="button logout active">
+							<div class="power"></div>
+						</div>
+						<a data-save="webcam-toy-photo.jpg" id="button-save" class="button hot-pink">
+							<div class="arrow rotate-90"></div>
+							<p>Save</p>
+						</a>
+						<p id="prompt-login">
+							<span>Great pic! Sign in and save this photo…</span>
+							<span>Lookin’ good! Now save this photo…</span>
+							<span>Nice shot! Click below to save this pic…</span>
+							<span>Cool pic. Sign in below to save it…</span>
+						</p>
+						<p id="prompt-twitter-logout">Log out @ from Twitter.</p>
+						<p id="prompt-google-logout">Log out from Google Photos.</p>
+						<p id="prompt-tumblr-logout">Log out from Tumblr.</p>
+						<p id="prompt-back">Go back and take another photo.</p>
+						<p id="prompt-discard">Discard this photo and try again.</p>
+						<p id="prompt-save">Save this photo to your computer.</p>
+						<footer>
+							<p id="prompt-disclaimer" style="display: block;">Real-Time Tracking does
+								<strong>not</strong> store any of your personal information.
+							</p>
+							<p id="prompt-twitter-post" style="display: none;">This photo and tweet will be posted to
+								your @ Twitter account.</p>
+							<p id="prompt-twitter-posted" style="display: none;">View your photo on Twitter.</p>
+							<p id="prompt-twitter-error" style="display: none;">Sorry, Twitter is having problems.
+								Please try again later!</p>
+							<p id="prompt-google-post" style="display: none;">This photo will be saved to your Google
+								Photos library.</p>
+							<p id="prompt-google-posted" style="display: none;">View your photo on Google Photos.</p>
+							<p id="prompt-google-error" style="display: none;">Sorry, Google Photos is having problems.
+								Please try again later!</p>
+							<p id="prompt-tumblr-post" style="display: none;">This photo will be posted on your Tumblr.
+							</p>
+							<p id="prompt-tumblr-posted" style="display: none;">View your photo on Tumblr.</p>
+							<p id="prompt-tumblr-error" style="display: none;">Sorry, Tumblr is having problems. Please
+								try again later!</p>
+						</footer>
+					</div>
+					<div id="camera-flash"></div>
+				</div>
+			</div>
+		</section>
+	</article>
+	<script async="" src="./Real-Time Tracking_files/analytics.js.download"></script>
+	<script src="./Real-Time Tracking_files/jquery.3.4.1.js.download"></script>
+	<script src="./Real-Time Tracking_files/app.322.js.download"></script>
+	<div id="head-links" class="notranslate" style="display: block;">
+		<div><a href="https://neave.com/" target="_top" class="adblock">♥&nbsp; GSC Brothers</a>
+			<ins class="adsbygoogle" style="display:inline-block;width:728px;height:50px;"
+				data-ad-client="ca-pub-9316345695176880" data-ad-slot="2225692602"
+				data-page-url="https://vrarvn.github.io/"></ins>
+			<script> (adsbygoogle = window.adsbygoogle || []).push({});</script>
+			<script async="" src="./Real-Time Tracking_files/f.txt"></script>
+		</div>
+	</div>
+	<div id="home-ad" style="display: none;">
+		<div>
+			<ins class="adsbygoogle" style="display:block;width:680px;height:280px;"
+				data-ad-client="ca-pub-9316345695176880" data-ad-slot="3108170069" data-ad-format="auto"
+				data-page-url="https://vrarvn.github.io/"></ins>
+			<script> (adsbygoogle = window.adsbygoogle || []).push({});</script>
+		</div>
+	</div>
+	<div id="photo-ad">
+		<div>
+			<ins class="adsbygoogle" style="display:inline-block;width:300px;height:300px;"
+				data-ad-client="ca-pub-9316345695176880" data-ad-slot="1991074342"
+				data-page-url="https://vrarvn.github.io/"></ins>
+			<script> (adsbygoogle = window.adsbygoogle || []).push({});</script>
+			<div>
+			</div>
+
+		</div>
+	</div>
+</body>
+<div style="position: absolute; top: 0px;"></div>
+
+</html>
